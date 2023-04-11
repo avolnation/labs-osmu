@@ -1,0 +1,23 @@
+# Vagrantfile
+
+# Choose the base box for the VM
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-20.04"
+  
+  # Set VM name
+  config.vm.define "ubuntu_vm" 
+  
+  # Set VM memory
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "2048"
+  end
+  
+  # Install nginx during provisioning
+  config.vm.provision "shell", inline: "sudo apt-get update && sudo apt-get install -y nginx"
+  
+  # Configure private network
+  config.vm.network "private_network", ip: "192.168.4.11"
+  
+  # Configure port forwarding
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+end
